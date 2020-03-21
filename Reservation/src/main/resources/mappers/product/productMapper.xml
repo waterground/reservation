@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sjh.web.mappers.product.ProductMapper">
+	<!-- <insert id="create">
+		INSERT INTO board(
+			mId
+			, bName
+			, bTitle
+			, bContent
+		) VALUES (
+			#{mId}
+			, #{bName}
+			, #{bTitle}
+			, #{bContent}
+		)
+	</insert>-->
+	
+	<!-- product_info 선택 -->
+	<select id="selectProductInfo" resultMap="productInfoResultMap">
+		SELECT 
+			i.name AS product_info_name
+			, i.tel
+			, i.address
+			, i.opening_hours
+			, i.homepage
+			, f.name AS file_name
+			, f.type
+		FROM 
+			product AS p
+		JOIN
+			product_info AS i
+		ON
+			(p.id = i.product_id)
+		JOIN
+			file AS f
+		ON
+			(p.id = f.product_id)
+		WHERE 
+			i.product_id = #{id}
+	</select>
+	
+	<!-- category에 따른 product들 선택 -->
+	<select id="listUpCategory" resultMap="productResultMap">
+		SELECT
+			p.id, p.description
+			, c.name AS category_name
+			, i.name AS product_info_name
+			, f.name AS file_name, f.type
+		FROM 
+			product AS p
+		JOIN
+			category AS c
+		ON
+			(c.id=p.category_id)
+		JOIN
+			product_info AS i
+		ON
+			(p.id=i.product_id)
+		JOIN
+			file AS f
+		ON 
+			(p.id = f.product_id)
+		WHERE
+			c.name like #{categoryName}
+		AND
+			f.name LIKE "%_th_%";
+	</select>
+	
+	<!-- 전체 product 선택 -->
+	<select id="listUpAll" resultMap="productResultMap">
+		SELECT
+			p.id, p.description
+			, info.name AS product_info_name
+			, f.name AS file_name, f.type
+		FROM 
+			product AS p
+		JOIN
+			product_info AS info
+		ON
+			(p.id = info.product_id)
+		JOIN
+			file AS f
+		ON 
+			(p.id = f.product_id)
+		WHERE
+			f.name LIKE '%_th_%';
+	</select>
+	
+	<!-- category에 따른 product 개수 확인 -->
+	<select id="cntCategory" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			product AS p, category AS c
+		WHERE
+			p.category_id = c.id
+		AND
+			c.name LIKE '#{categoryName}'
+	</select>
+	
+	<!-- 전체 product 개수 확인 -->
+	<select id="cntAll" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			product
+	</select>
+	
+	<!-- promotion하는 product들 선택 -->
+	<select id="listUpPromotion" resultMap="promotionResultMap">
+		SELECT 
+			promo.id AS promotion_id
+			, p.id AS product_id
+			, f.name AS file_name, f.type
+		FROM 
+			promotion AS promo
+		JOIN
+			product AS p
+		ON
+			(p.id = promo.product_id)
+		JOIN
+			file AS f
+		ON 
+			(f.product_id = p.id)
+		WHERE
+			f.name LIKE "%_ma_%"
+	</select>
+	
+	<!-- 
+	<update id="update">
+		UPDATE 
+			board 
+		SET 
+			bTitle=#{bTitle}
+			, bContent=#{bContent}
+		WHERE 
+			bId=#{bId}
+	</update> 
+	
+	<delete id="delete">
+		DELETE FROM board 
+		WHERE bId=#{bId}
+	</delete>
+	 -->
+	
+	<!-- DTO의 필드변수명과 DB 칼럼명 매핑 -->
+	<resultMap id="productResultMap" type="ProductDto">
+		<id property="id" column="id"/>
+		<result property="categoryName" column="category_name"/>
+		<result property="name" column="product_info_name"/>
+		<result property="description" column="description"/>
+		
+		<!-- mainImg -->
+		<association property="mainImg" javaType="FileDto">
+			<result property="name" column="file_name"/>
+			<result property="type" column="type"/>
+		</association>
+	</resultMap>
+	
+	<resultMap id="productInfoResultMap" type="ProductDto">
+		<id property="id" column="id"/>
+		<result property="categoryId" column="category_id"/>
+		<result property="categoryName" column="category_name"/>
+		<result property="description" column="description"/>
+		<result property="name" column="product_info_name"/>
+		<result property="tel" column="tel"/>
+		<result property="address" column="address"/>
+		<result property="openingHours" column="opening_hours"/>
+		<result property="homepage" column="homepage"/>
+		
+		<!-- mainImg -->
+		<association property="mainImg" javaType="FileDto">
+			<result property="name" column="file_name"/>
+			<result property="type" column="type"/>
+		</association>
+		
+		<!--  
+		imgList
+		<collection property="FileDto" ofType="FileDto">
+			<id property="id" column="id"/>
+			<result property="name" column="name"/>
+			<result property="type" column="type"/>
+		</collection>-->
+	</resultMap>
+	
+	<resultMap id="promotionResultMap" type="PromotionDto">
+		<id property="id" column="promotion_id"/>
+		<result property="productId" column="product_id"/>
+		<!-- img -->
+		<association property="img" javaType="FileDto">
+			<result property="name" column="file_name"/>
+			<result property="type" column="type"/>
+		</association>
+	</resultMap>
+</mapper>

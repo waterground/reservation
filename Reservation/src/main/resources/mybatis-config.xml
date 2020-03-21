@@ -3,6 +3,9 @@
     PUBLIC "-//mybatis.org//DTD config 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
-
-	
+	<typeAliases>
+		<typeAlias type="com.sjh.web.product.dto.ProductDto" alias="ProductDto" />
+		<typeAlias type="com.sjh.web.promotion.dto.PromotionDto" alias="PromotionDto" />
+		<typeAlias type="com.sjh.web.file.dto.FileDto" alias="FileDto" />
+	</typeAliases>
 </configuration>

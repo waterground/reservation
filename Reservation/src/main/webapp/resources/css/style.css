@@ -1,0 +1,109 @@
+body{
+	background-color: gray;
+}
+
+.background {
+	width: 40%;
+	margin: 0 auto;
+}
+
+#main_header{
+	background: #ffc107;
+	height: 70px;
+}
+
+#main_header .first{
+	float: left;
+	margin-left: 10px;
+	line-height: 60px;
+	vertical-align: middle;
+}
+
+#main_header .second{
+	float: right;
+	margin-right: 18px;
+	line-height: 60px;
+	vertical-align: middle;
+}
+
+#main_header img{
+	padding-left: 20px;
+	vertical-align: middle;
+}
+
+#main_header a{
+	color: white;
+	vertical-align: middle;
+}
+
+#main_header a:hover{
+	color: white;
+	text-decoration: none;
+}
+
+.carousel-inner {
+	height: 300px;
+	overflow: hidden;
+}
+
+.carousel-inner img {
+	margin-top: -100px;
+	width: inherit;
+	height: auto;
+}
+
+#product_tab {
+	display: block;
+	z-index: 1;
+}
+
+.navbar .navbar-collapse {
+	text-align: center;
+}
+
+.navbar-nav {
+	left: 50%;
+	margin-left: 30%;
+}
+
+.navbar-nav li {
+	margin-right: 18px;
+	color: white;
+	font-size: 15px;
+}
+
+.card {
+	height: auto;
+}
+
+.card img {
+	top: 0;
+	left: 0;
+}
+
+.toTop{
+	position: fixed;
+	bottom: 0;
+	left: 30%;
+	width: 40%;
+	background: #ffc107;
+	z-index: 10;
+	padding: 10px 0;
+	margin: 0 auto;
+}
+
+.toTop div{
+	text-align: center;
+}
+
+.toTop a{
+	margin: 0 auto;
+	color: white;
+	text-decoration: none;
+}
+
+.toTop a:hover{
+	font-weight: bolder;
+	color: white;
+	text-decoration: none;
+}
