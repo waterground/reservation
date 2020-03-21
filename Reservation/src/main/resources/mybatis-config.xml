@@ -7,5 +7,6 @@
 		<typeAlias type="com.sjh.web.product.dto.ProductDto" alias="ProductDto" />
 		<typeAlias type="com.sjh.web.promotion.dto.PromotionDto" alias="PromotionDto" />
 		<typeAlias type="com.sjh.web.file.dto.FileDto" alias="FileDto" />
+		<typeAlias type="com.sjh.web.member.dto.MemberDto" alias="MemberDto" />
 	</typeAliases>
 </configuration>

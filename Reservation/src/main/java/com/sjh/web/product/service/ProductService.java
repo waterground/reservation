@@ -19,29 +19,23 @@ public class ProductService implements IProductService {
 	@Override
 	public List<ProductDto> listUpByCategory(String categoryName) {
 		
-		List<ProductDto> list = null;
-		
 		if(categoryName.equals("all")) {
-			list = dao.listUpAll();
+			return dao.listUpAll();
 		}else {
-			list = dao.listUpCategory(categoryName);
+			return dao.listUpCategory(categoryName);
 		}
 		
-		return list;
 	}
 	
 	@Override
 	public int getProductCnt(String categoryName) {
 		
-		int result = 0;
-		
 		if(categoryName.equals("all")) {
-			result = dao.cntAll();
+			return dao.cntAll();
 		}else {
-			result = dao.cntCategory(categoryName);
+			return dao.cntCategory(categoryName);
 		}
 		
-		return result;
 	}
 	
 	@Override

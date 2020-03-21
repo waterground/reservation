@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sjh.web.mappers.member.MemberMapper">
+
+	<select id="check" resultType="MemberDto">
+		SELECT 
+			*
+		FROM
+			member
+		WHERE
+			id=#{id}
+		AND
+			pw=#{pw}
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO
+			member
+		VALUES(
+			#{id}
+			, #{pw}
+		)
+	</insert>
+	
+	<delete id="delete">
+		DELETE FROM
+			member
+		WHERE
+			id=#{id}
+	</delete>
+
+	<resultMap id="memberResultMap" type="MemberDto">
+		<id property="id" column="id" />
+		<result property="pw" column="pw" />
+	</resultMap>
+</mapper>

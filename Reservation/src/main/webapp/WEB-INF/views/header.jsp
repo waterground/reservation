@@ -7,11 +7,21 @@
 	</div>
 	<div class="second">
 		<c:choose>
-			<c:when test="${not empty member && member.mId != null}">
-				<span>${member.getmName()} </span>
+			<c:when test="${not empty member && member.id ne null}">
+				<div class="dropdown">
+					<button class="btn dropdown-toggle" type="button"
+						id="dropdownMenuButton" data-toggle="dropdown"
+						style="color: white">${member.getId()}</button>
+					<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+						<a class="dropdown-item" href="#">Action</a> <a
+							class="dropdown-item" href="${cp}/member/remove">회원 탈퇴</a>
+						<div class="dropdown-divider"></div>
+						<a class="dropdown-item" href="${cp}/member/logout">로그아웃</a>
+					</div>
+				</div>
 			</c:when>
 			<c:otherwise>
-				<a href="${cp}/member/loginForm">예약하기</a>
+				<a href="${cp}/member/login">예약하기</a>
 			</c:otherwise>
 		</c:choose>
 	</div>
