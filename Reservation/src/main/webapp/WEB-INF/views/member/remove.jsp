@@ -37,6 +37,7 @@
 				<button>회원 탈퇴</button>
 			</form:form>
 		</div>
+		<jsp:include page="../footer.jsp" flush="false" />
 	</div>
 </body>
 </html>

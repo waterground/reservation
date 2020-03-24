@@ -38,6 +38,7 @@
 				<button style="float: right">로그인</button>
 			</form:form>
 		</div>
+		<jsp:include page="../footer.jsp" flush="false" />
 	</div>
 </body>
 </html>

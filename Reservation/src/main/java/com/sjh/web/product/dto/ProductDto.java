@@ -18,7 +18,7 @@ public class ProductDto {
 	private String homepage;
 	
 	private FileDto mainImg;
-	//private List<FileDto> imgList;
+	private List<FileDto> imgList;
 	
 	public int getId() {
 		return id;
@@ -74,13 +74,10 @@ public class ProductDto {
 	public void setMainImg(FileDto mainImg) {
 		this.mainImg = mainImg;
 	}
-	/*
 	public List<FileDto> getImgList() {
 		return imgList;
 	}
 	public void setImgList(List<FileDto> imgList) {
 		this.imgList = imgList;
-	}
-	*/
-	
+	}	
 }

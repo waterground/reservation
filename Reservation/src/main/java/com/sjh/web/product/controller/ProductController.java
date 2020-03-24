@@ -44,5 +44,13 @@ public class ProductController {
 		
 		return service.listUpByCategory(categoryName);
 	}
+	
+	@RequestMapping("/product/info")
+	public String productInfo(@RequestParam("id") int id, Model model) {
+		
+		model.addAttribute("product", service.selectProductInfo(id));
+		
+		return "/product/info";
+	}
 
 }

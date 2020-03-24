@@ -19,11 +19,13 @@
 	<!-- product_info 선택 -->
 	<select id="selectProductInfo" resultMap="productInfoResultMap">
 		SELECT 
-			i.name AS product_info_name
+			i.product_id AS p_id
+			, i.name AS product_info_name
 			, i.tel
 			, i.address
 			, i.opening_hours
 			, i.homepage
+			, f.id AS f_id
 			, f.name AS file_name
 			, f.type
 		FROM 
@@ -38,6 +40,8 @@
 			(p.id = f.product_id)
 		WHERE 
 			i.product_id = #{id}
+		AND
+			f.name NOT LIKE "%_th_%"
 	</select>
 	
 	<!-- category에 따른 product들 선택 -->
@@ -159,8 +163,7 @@
 	</resultMap>
 	
 	<resultMap id="productInfoResultMap" type="ProductDto">
-		<id property="id" column="id"/>
-		<result property="categoryId" column="category_id"/>
+		<id property="id" column="p_id"/>
 		<result property="categoryName" column="category_name"/>
 		<result property="description" column="description"/>
 		<result property="name" column="product_info_name"/>
@@ -168,20 +171,13 @@
 		<result property="address" column="address"/>
 		<result property="openingHours" column="opening_hours"/>
 		<result property="homepage" column="homepage"/>
-		
-		<!-- mainImg -->
-		<association property="mainImg" javaType="FileDto">
+	
+		<!-- 상세 이미지 -->		
+		<collection property="imgList" ofType="FileDto">
+			<id property="id" column="f_id"/>
 			<result property="name" column="file_name"/>
 			<result property="type" column="type"/>
-		</association>
-		
-		<!--  
-		imgList
-		<collection property="FileDto" ofType="FileDto">
-			<id property="id" column="id"/>
-			<result property="name" column="name"/>
-			<result property="type" column="type"/>
-		</collection>-->
+		</collection>
 	</resultMap>
 	
 	<resultMap id="promotionResultMap" type="PromotionDto">

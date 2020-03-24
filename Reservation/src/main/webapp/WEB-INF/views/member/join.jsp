@@ -34,6 +34,7 @@
 				<button class="float-right">회원 가입</button>
 			</form:form>
 		</div>
+		<jsp:include page="../footer.jsp" flush="false" />
 	</div>
 </body>
 </html>

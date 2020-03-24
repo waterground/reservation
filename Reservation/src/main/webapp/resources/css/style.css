@@ -121,3 +121,15 @@ body{
 	color: white;
 	text-decoration: none;
 }
+
+.footer{
+	height: 150px;
+	background: #d4d3cf;
+	text-align: center;
+	padding-top: 20px; 
+}
+
+.footer .copyright{
+	color: white;
+	margin-top: 100px;
+}

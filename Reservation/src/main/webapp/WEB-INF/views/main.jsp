@@ -12,6 +12,7 @@
 <script src='//unpkg.com/jquery@3/dist/jquery.min.js'></script>
 <script src='//unpkg.com/popper.js@1/dist/umd/popper.min.js'></script>
 <script src='//unpkg.com/bootstrap@4/dist/js/bootstrap.min.js'></script>
+<script src="${cp}/resources/javascript/carousel.js"></script>
 </head>
 <body>
 	<div class="background">
@@ -20,33 +21,41 @@
 			<ol class="carousel-indicators">
 				<li data-target="#carouselIndicators" data-slide-to="0"
 					class="active"></li>
-				<li data-target="#carouselIndicators" data-slide-to="1"></li>
-				<li data-target="#carouselIndicators" data-slide-to="2"></li>
+				<c:forEach items="${promotion}" var="promotion" varStatus="status">
+					<c:if test="${status.index ne 0}">
+						<li data-target="#carouselIndicators"
+							data-slide-to="${status.index}"></li>
+					</c:if>
+				</c:forEach>
 			</ol>
 			<div class="carousel-inner">
 				<c:forEach items="${promotion}" var="promotion">
 					<c:choose>
 						<c:when test="${promotion.id eq 1}">
 							<div class="carousel-item active">
-								<img class="d-block w-100"
+								<a href="${cp}/product/info?${promotion.productId}"> <img
+									class="d-block w-100"
 									src="${cp}/resources/img/img/${promotion.img.name}.${promotion.img.type}">
+								</a>
 							</div>
 						</c:when>
 						<c:otherwise>
 							<div class="carousel-item">
-								<img class="d-block w-100"
+								<a href="${cp}/product/info?${promotion.productId}"> <img
+									class="d-block w-100"
 									src="${cp}/resources/img/img/${promotion.img.name}.${promotion.img.type}">
+								</a>
 							</div>
 						</c:otherwise>
 					</c:choose>
+
 				</c:forEach>
 			</div>
-			<a class="carousel-control-prev" href="#carouselIndicators"
-				role="button" data-slide="prev"> <span
-				class="carousel-control-prev-icon" aria-hidden="true"></span>
-			</a> <a class="carousel-control-next" href="#carouselIndicators"
-				role="button" data-slide="next"> <span
-				class="carousel-control-next-icon" aria-hidden="true"></span> 
+			<a class="carousel-control-prev" role="button" data-slide="prev">
+				<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+			</a> 
+			<a class="carousel-control-next" role="button" data-slide="next">
+				<span class="carousel-control-next-icon" aria-hidden="true"></span>
 			</a>
 		</div>
 		<div id="products_tab">
@@ -71,25 +80,9 @@
 				<a href="#main_header">Top</a>
 			</div>
 		</div>
+		<jsp:include page="footer.jsp" flush="false" />
 	</div>
 	<script>
-		// promotion 이벤트
-		$(".carousel").carousel({
-			interval : 2000
-		});
-
-		$(".carousel-control-prev").click(function() {
-			$(".carousel").carousel("prev");
-		});
-		$(".carousel-control-next").click(function() {
-			$(".carousel").carousel("next");
-		});
-		
-		$(".carousel-indicators li").click(function(){
-			var index = $(".carousel-indicators li").index(this);
-			$(".carousel").carousel(index);
-		})
-
 		// category 선택에 따른 active 태그 변화
 		var listContainer = document.getElementById("products_tab");
 		var list = listContainer.getElementsByTagName("a");
@@ -110,35 +103,28 @@
 
 		// product 목록 함수
 		function fn_getList(category) {
-			$
-					.ajax({
-						type : "post",
-						url : "${cp}/list?categoryName=" + category,
-						dataType : "json",
-						success : function(res) {
-							var html = "";
+			$.ajax({
+				type : "post",
+				url : "${cp}/list?categoryName=" + category,
+				dataType : "json",
+				success : function(res) {
+					var html = "";
 
-							if (res.length < 1) {
-								html = "진행중인 행사가 없습니다";
-							} else {
-								$(res)
-										.each(
-												function() {
-													html += '<div class="card">';
-													html += '<img class="card-img-top" src="${cp}/resources/img/img/'+this.mainImg.name+'.'+this.mainImg.type+ '">';
-													html += '<div class="card-body">';
-													html += '<h5 class="card-title">'
-															+ this.name
-															+ '</h5>';
-													html += '<p class="card-text">'
-															+ this.description
-															+ '</p>';
-													html += '</div></div>';
-												});
-							}
-							$("#product_list").html(html);
+					if (res.length < 1) {
+						html = "진행중인 행사가 없습니다";
+					} else {
+						$(res).each(function() {
+							html += '<div class="card" onClick="location.href=\'${cp}/product/info?id='+ this.id + '\'">';
+							html += '<img class="card-img-top" src="${cp}/resources/img/img/'+this.mainImg.name+'.'+this.mainImg.type+ '">';
+							html += '<div class="card-body">';
+							html += '<h5 class="card-title">'+ this.name+ '</h5>';
+							html += '<p class="card-text">'+ this.description+ '</p>';
+							html += '</div></div>';
+							});
 						}
-					});
+						$("#product_list").html(html);
+					}
+				});
 		}
 	</script>
 </body>
