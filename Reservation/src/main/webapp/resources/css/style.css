@@ -83,16 +83,19 @@ body{
 
 .card {
 	height: auto;
+	cursor:pointer;
 }
 
 .card img {
 	top: 0;
 	left: 0;
+	cursor:pointer;
 }
 
 .form_container{
 	width: 70%;
 	margin: 20px auto;
+	margin-bottom: 100px;
 }
 
 .toTop{
@@ -120,6 +123,7 @@ body{
 	font-weight: bolder;
 	color: white;
 	text-decoration: none;
+	cursor:pointer;
 }
 
 .footer{

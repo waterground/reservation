@@ -22,23 +22,13 @@ public class ProductDao implements IProductDao {
 	}
 	
 	@Override
-	public List<ProductDto> listUpCategory(final String categoryName){
-		return sqlSession.selectList(NAMESPACE + ".listUpCategory", categoryName);
+	public List<ProductDto> listUpProduct(final String categoryName){
+		return sqlSession.selectList(NAMESPACE + ".listUpProduct", categoryName);
 	}
 	
 	@Override
-	public List<ProductDto> listUpAll(){
-		return sqlSession.selectList(NAMESPACE + ".listUpAll");
-	}
-	
-	@Override
-	public int cntCategory(final String categoryName){
-		return sqlSession.selectOne(NAMESPACE + ".cntCategory", categoryName);
-	}
-	
-	@Override
-	public int cntAll(){
-		return sqlSession.selectOne(NAMESPACE + ".cntAll");
+	public int cntProduct(final String categoryName){
+		return sqlSession.selectOne(NAMESPACE + ".cntProduct", categoryName);
 	}
 	
 	@Override

@@ -13,7 +13,7 @@
 						id="dropdownMenuButton" data-toggle="dropdown"
 						style="color: white">${member.getId()}</button>
 					<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-						<a class="dropdown-item" href="#">Action</a> <a
+						<a class="dropdown-item" href="${cp}/reservation/list">예약 목록</a> <a
 							class="dropdown-item" href="${cp}/member/remove">회원 탈퇴</a>
 						<div class="dropdown-divider"></div>
 						<a class="dropdown-item" href="${cp}/member/logout">로그아웃</a>

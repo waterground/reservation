@@ -21,8 +21,7 @@
 		SELECT 
 			i.product_id AS p_id
 			, i.name AS product_info_name
-			, i.tel
-			, i.address
+			, i.tel, i.address
 			, i.opening_hours
 			, i.homepage
 			, f.id AS f_id
@@ -45,18 +44,22 @@
 	</select>
 	
 	<!-- category에 따른 product들 선택 -->
-	<select id="listUpCategory" resultMap="productResultMap">
+	<select id="listUpProduct" parameterType="String" resultMap="productResultMap">
 		SELECT
 			p.id, p.description
-			, c.name AS category_name
+			<if test="!'all'.equals(_parameter)">
+				, c.name AS category_name
+			</if>
 			, i.name AS product_info_name
 			, f.name AS file_name, f.type
 		FROM 
 			product AS p
-		JOIN
-			category AS c
-		ON
-			(c.id=p.category_id)
+		<if test="!'all'.equals(_parameter)">
+			JOIN
+				category AS c
+			ON
+				(c.id=p.category_id)
+		</if>
 		JOIN
 			product_info AS i
 		ON
@@ -66,12 +69,14 @@
 		ON 
 			(p.id = f.product_id)
 		WHERE
-			c.name like #{categoryName}
-		AND
-			f.name LIKE "%_th_%";
+			f.name LIKE "%_th_%"
+		<if test="!'all'.equals(_parameter)">
+			AND c.name LIKE #{_parameter}
+		</if>
 	</select>
 	
-	<!-- 전체 product 선택 -->
+	<!-- 
+	전체 product 선택 
 	<select id="listUpAll" resultMap="productResultMap">
 		SELECT
 			p.id, p.description
@@ -90,32 +95,29 @@
 		WHERE
 			f.name LIKE '%_th_%';
 	</select>
+	-->
 	
 	<!-- category에 따른 product 개수 확인 -->
-	<select id="cntCategory" resultType="int">
+	<select id="cntProduct" parameterType="String" resultType="int">
 		SELECT
 			COUNT(*)
 		FROM
-			product AS p, category AS c
-		WHERE
-			p.category_id = c.id
-		AND
-			c.name LIKE '#{categoryName}'
-	</select>
-	
-	<!-- 전체 product 개수 확인 -->
-	<select id="cntAll" resultType="int">
-		SELECT
-			COUNT(*)
-		FROM
-			product
+			product AS p
+		<if test="!'all'.equals(_parameter)">
+			JOIN 
+				category AS c
+			ON
+				p.category_id = c.id
+			AND
+				c.name LIKE #{_parameter}
+		</if>
 	</select>
 	
 	<!-- promotion하는 product들 선택 -->
 	<select id="listUpPromotion" resultMap="promotionResultMap">
 		SELECT 
 			promo.id AS promotion_id
-			, p.id AS product_id
+			, promo.product_id
 			, f.name AS file_name, f.type
 		FROM 
 			promotion AS promo
@@ -156,10 +158,7 @@
 		<result property="description" column="description"/>
 		
 		<!-- mainImg -->
-		<association property="mainImg" javaType="FileDto">
-			<result property="name" column="file_name"/>
-			<result property="type" column="type"/>
-		</association>
+		<association property="mainImg" resultMap="fileResultMap"/>
 	</resultMap>
 	
 	<resultMap id="productInfoResultMap" type="ProductDto">
@@ -173,20 +172,32 @@
 		<result property="homepage" column="homepage"/>
 	
 		<!-- 상세 이미지 -->		
+		<collection property="imgList" ofType="FileDto" resultMap="fileResultMap"/>
+		<!-- 
 		<collection property="imgList" ofType="FileDto">
 			<id property="id" column="f_id"/>
 			<result property="name" column="file_name"/>
 			<result property="type" column="type"/>
 		</collection>
+		 -->
 	</resultMap>
 	
 	<resultMap id="promotionResultMap" type="PromotionDto">
 		<id property="id" column="promotion_id"/>
 		<result property="productId" column="product_id"/>
 		<!-- img -->
+		<association property="img" resultMap="fileResultMap"/>
+		<!--  
 		<association property="img" javaType="FileDto">
 			<result property="name" column="file_name"/>
 			<result property="type" column="type"/>
 		</association>
+		-->
+	</resultMap>
+	
+	<resultMap id="fileResultMap" type="FileDto">
+		<id property="id" column="f_id"/>
+		<result property="name" column="file_name"/>
+		<result property="type" column="type"/>
 	</resultMap>
 </mapper>

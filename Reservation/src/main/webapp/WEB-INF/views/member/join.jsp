@@ -21,7 +21,7 @@
 			<br>
 			<h3>회원 가입</h3>
 			<br>
-			<form:form action="${cp}/member/joinOk" method="post"
+			<form:form action="${cp}/member/join" method="post"
 				commandName="member">
 				<div class="form-group">
 					<form:label path="id"> 아이디 </form:label>

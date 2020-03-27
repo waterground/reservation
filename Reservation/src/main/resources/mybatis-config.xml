@@ -3,10 +3,20 @@
     PUBLIC "-//mybatis.org//DTD config 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
+
+	<!-- _ 자동으로 camelCase로 변경 -->
+	<settings>
+		<setting name="mapUnderscoreToCamelCase" value="true"/> 
+	</settings>
+
 	<typeAliases>
 		<typeAlias type="com.sjh.web.product.dto.ProductDto" alias="ProductDto" />
 		<typeAlias type="com.sjh.web.promotion.dto.PromotionDto" alias="PromotionDto" />
 		<typeAlias type="com.sjh.web.file.dto.FileDto" alias="FileDto" />
 		<typeAlias type="com.sjh.web.member.dto.MemberDto" alias="MemberDto" />
+		<typeAlias type="com.sjh.web.reservation.dto.ReservationDto" alias="ReservationDto" />
+		<typeAlias type="com.sjh.web.comment.dto.CommentDto" alias="CommentDto" />
 	</typeAliases>
+	
+	
 </configuration>

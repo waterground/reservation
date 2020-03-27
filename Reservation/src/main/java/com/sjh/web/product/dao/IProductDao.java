@@ -7,13 +7,9 @@ import com.sjh.web.promotion.dto.PromotionDto;
 
 public interface IProductDao {
 
-	List<ProductDto> listUpCategory(String categoryName);
-
-	List<ProductDto> listUpAll();
+	List<ProductDto> listUpProduct(String categoryName);
 	
-	int cntCategory(String categoryName);
-	
-	int cntAll();
+	int cntProduct(String categoryName);
 	
 	ProductDto selectProductInfo(int id);
 

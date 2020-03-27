@@ -19,7 +19,7 @@
 		<div class="form_container">
 			<br>
 			<h3>로그인</h3><br>
-			<form:form action="${cp}/member/loginOk" method="post" commandName="member">
+			<form:form action="${cp}/member/login" method="post" commandName="member">
 				<div class="form-group">
 					<form:label path="id"> 아이디 </form:label>
 					<form:input path="id" placeholder="아이디" class="form-control" />

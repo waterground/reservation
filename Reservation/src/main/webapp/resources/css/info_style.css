@@ -4,22 +4,36 @@
 }
 
 #detail{
-	height: 150px;
+	height: 180px;
 	padding: 20px;
 }
 
-#detail div{
-	
-}
-
-
-
 #btnContainer{
-	height: 100px;
+	height: 60px;
 	background: #ffc107;
 	text-align: center;
 }
 
+#btnContainer div{
+	text-align: center;
+	padding: 10px;
+}
+
 #btnContainer a{
-	font-size: 20px;
+	margin: auto auto;
+	color: white;
+	text-decoration: none;
+	font-size: 25px;
+}
+
+#btnContainer a:hover{
+	font-weight: bolder;
+	color: white;
+	text-decoration: none;
+	cursor:pointer;
+}
+
+#commnetList .commentContainer{
+	width: 60%;
+	margin: 15px;
 }

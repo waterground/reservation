@@ -22,7 +22,7 @@
 		<h3>회원 탈퇴</h3>
 		<br>
 		<div class="form_container">
-			<form:form action="${cp}/member/removeOk" method="post"
+			<form:form action="${cp}/member/remove" method="post"
 				commandName="member">
 				<form:hidden path="id" value="${member.id}" />
 				<div class="form-group">

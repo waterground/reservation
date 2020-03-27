@@ -6,6 +6,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,7 +27,7 @@ public class MemberController {
 		return request.getContextPath();
 	}
 
-	@RequestMapping("/login")
+	@GetMapping("/login")
 	public String login(Model model) {
 
 		model.addAttribute("member", new MemberDto());
@@ -34,7 +35,7 @@ public class MemberController {
 		return "/member/login";
 	}
 
-	@PostMapping("/loginOk")
+	@PostMapping("/login")
 	public ModelAndView loginOk(@ModelAttribute("member") MemberDto m, HttpServletRequest request) {
 		
 		MemberDto mem = service.checkLogin(m);
@@ -54,7 +55,7 @@ public class MemberController {
 		return mav;
 	}
 	
-	@RequestMapping("/join")
+	@GetMapping("/join")
 	public String joinForm(Model model) {
 		
 		model.addAttribute("member", new MemberDto());
@@ -62,7 +63,7 @@ public class MemberController {
 		return "/member/join";
 	}
 	
-	@RequestMapping(value="/joinOk", method=RequestMethod.POST)
+	@PostMapping("/joinOk")
 	public String joinOk(@ModelAttribute("member") MemberDto m) {
 		
 		service.addMember(m);
@@ -80,7 +81,7 @@ public class MemberController {
 	}
 
 	// Remove
-	@RequestMapping("/remove")
+	@GetMapping("/remove")
 	public ModelAndView remove(HttpServletRequest request) {
 
 		ModelAndView mav = new ModelAndView();
@@ -94,7 +95,7 @@ public class MemberController {
 		return mav;
 	}
 
-	@RequestMapping(value = "/removeOk", method = RequestMethod.POST)
+	@PostMapping("/remove")
 	public ModelAndView removeOk(@ModelAttribute("member") MemberDto member, HttpSession session) {
 
 		ModelAndView mav = new ModelAndView();
