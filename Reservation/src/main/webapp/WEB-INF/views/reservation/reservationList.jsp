@@ -33,7 +33,12 @@
 									<h4 class="card-title">${reservation.productName}</h4>
 									<p class="card-text">예약 날짜: ${reservation.date}</p>
 									<p class="card-text">예약 인원: ${reservation.people}</p>
-									<a href="${cp}/comment/${reservation.id}" class="btn btn-primary" onclick="sendInfo(${reservation.productId})">코멘트</a> 
+									<c:if test="${reservation.hasReview eq false}">
+										<a href="${cp}/comment/${reservation.id}" class="btn btn-primary" onclick="sendInfo(${reservation.productId})">코멘트 작성</a> 
+									</c:if>
+									<c:if test="${reservation.hasReview eq true}">
+										<a href="${cp}/product/${reservation.productId}" class="btn btn-primary" onclick="sendInfo(${reservation.productId})">코멘트 보기</a> 
+									</c:if>
 									<a href="#" class="btn btn-danger" onclick="del(${reservation.id})">예약취소</a>
 								</div>
 							</div>

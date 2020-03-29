@@ -24,6 +24,7 @@
 			, i.tel, i.address
 			, i.opening_hours
 			, i.homepage
+			, i.rating_avg
 			, f.id AS f_id
 			, f.name AS file_name
 			, f.type
@@ -170,6 +171,7 @@
 		<result property="address" column="address"/>
 		<result property="openingHours" column="opening_hours"/>
 		<result property="homepage" column="homepage"/>
+		<result property="ratingAvg" column="rating_avg"/>
 	
 		<!-- 상세 이미지 -->		
 		<collection property="imgList" ofType="FileDto" resultMap="fileResultMap"/>

@@ -12,11 +12,10 @@
 <script src='//unpkg.com/jquery@3/dist/jquery.min.js'></script>
 <script src='//unpkg.com/popper.js@1/dist/umd/popper.min.js'></script>
 <script src='//unpkg.com/bootstrap@4/dist/js/bootstrap.min.js'></script>
-<!-- star rating -->
-<link href="${cp}/resources/css/star-rating-svg.css" media="all"
-	rel="stylesheet" type="text/css" />
-<script src="${cp}/resources/javascript/jquery.star-rating-svg.js"
-	type="text/javascript"></script>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
 </head>
 <body>
 	<div class="background">
@@ -36,9 +35,9 @@
 				</div>
 				<!-- 평점 선택창 -->
 				<div class="form-group my-ratings">
-					<form:label path="score">평점: </form:label>
-					<form:hidden path="score" id="score" value="0" />
-					<div class="my-rating"></div>
+					<form:label path="rating">평점: </form:label>
+					<form:hidden path="rating" id="rating" value="0" />
+					<div class="rating"></div>
 				</div>
 				<button class="btn btn-primary float-right">등록</button>
 				<a href="#" class="btn btn-primary float-right"
@@ -48,14 +47,14 @@
 		<jsp:include page="../footer.jsp" flush="false" />
 	</div>
 	<script>
-		$(".my-rating").starRating({
-			initialRating : 4,
-			strokeColor : '#894A00',
-			strokeWidth : 10,
-			starSize : 25,
-			callback : function(currentRating, $el) {
-				$("#score").val(currentRating);
-			}
+		$(".rating").rateYo({
+			rating: 2.5,
+			starWidth: "20px",
+			normalFill: "#A0A0A0",
+			halfStar: true,
+			onSet: function (rating, rateYoInstance) {
+				$("#rating").val(rating);
+		    }
 		});
 	</script>
 </body>

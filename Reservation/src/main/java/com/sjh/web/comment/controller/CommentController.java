@@ -1,6 +1,6 @@
 package com.sjh.web.comment.controller;
 
-import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -47,7 +47,6 @@ public class CommentController {
 	// 작성 처리
 	@PostMapping("/")
 	public String writeOk(@ModelAttribute("comment") CommentDto comment, HttpSession session) {
-
 		CommentDto c = service.insertComment(comment);
 
 		return "redirect:/product/" + c.getProductId();
@@ -56,32 +55,36 @@ public class CommentController {
 
 	@ResponseBody
 	@PostMapping("/list/{productId}")
-	public List<CommentDto> list(@PathVariable("productId") int productId, Model model) {
+	public Map<String, Object> list(@PathVariable("productId") int productId, Model model) {
 
 		CommentDto c = new CommentDto();
 		c.setProductId(productId);
+		Map<String, Object> map = service.listUpComment(c);
 
-		return service.listUpComment(c);
+		return map;
 	}
-	/*
-	 * @RequestMapping(value = "/modify", method = RequestMethod.POST) public
-	 * ResponseEntity<String> modify(@RequestBody CommentDto comment) {
-	 * ResponseEntity<String> entity = null;
-	 * 
-	 * try { service.commentUpdate(comment); entity = new
-	 * ResponseEntity<String>("modify Success", HttpStatus.OK); } catch (Exception
-	 * e) { e.printStackTrace(); entity = new ResponseEntity<String>(e.getMessage(),
-	 * HttpStatus.BAD_REQUEST); }
-	 * 
-	 * return entity; }
-	 */
+
+	@RequestMapping(value = "/modify", method = RequestMethod.POST)
+	public ResponseEntity<String> modify(@RequestBody CommentDto comment) {
+		ResponseEntity<String> entity = null;
+
+		try {
+			service.updateComment(comment);
+			entity = new ResponseEntity<String>("modify Success", HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			entity = new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+
+		return entity;
+	}
 
 	@RequestMapping(value = "/remove", method = RequestMethod.POST)
 	public ResponseEntity<String> remove(@RequestBody CommentDto comment) {
 		ResponseEntity<String> entity = null;
 
 		try {
-			service.deleteComment(comment.getId());
+			service.deleteComment(comment);
 			entity = new ResponseEntity<String>("remove Success", HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -22,6 +22,11 @@
 	rel="stylesheet" type="text/css" />
 <script src="${cp}/resources/javascript/jquery.star-rating-svg.js"
 	type="text/javascript"></script>
+	
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
 </head>
 <body>
 	<div class="background">
@@ -72,13 +77,17 @@
 			<div class="info">주소 ${product.address}</div>
 			<div class="info">운영 시간 ${product.openingHours}</div>
 			<div class="info">홈페이지 ${product.homepage}</div>
+			<input type="hidden" id="productId" value='${product.id}'>
 		</div>
 		<!-- 예약하기 버튼 box -->
 		<div id="btnContainer">
 			<div><a href="${cp}/reservation/${product.id}">예약하기</a></div>
 		</div>
-		<!-- avg score box -->
-		<div id="score">
+		<!-- avg rating box -->
+		<div id="ratingContainer">
+		<span id="ratingText">${product.ratingAvg}</span>
+			<div id="ratingAvg" data-rateyo-rating="0"></div>
+			<!-- ${product.ratingAvg} -->
 		</div>
 		<!-- comment box -->
 		<div id="commentList"></div>
@@ -91,7 +100,6 @@
 		interval : 2000
 	});
 	
-	
 	var memberId; // 로그인 중인 멤버 id
 	$(document).ready(function(){
 		// 후기 목록 함수 호출	
@@ -100,14 +108,24 @@
 		fn_getList();
 	});
 	
-	$( document ).ajaxComplete(function() {
-		$(".rating").starRating({
-			starSize: 20,
-			strokeColor : '#894A00',
-			strokeWidth : 10,
-			readOnly: true
+	$(document).ajaxComplete(function() {
+		$(".ratingComment").rateYo({
+		    starWidth: "15px",
+		    normalFill: "#A0A0A0",
+		    readOnly: true
+		  });
+		
+		$("#ratingAvg").rateYo({
+		    starWidth: "40px",
+		    normalFill: "#A0A0A0",
+		    readOnly: true
 		});
 	});
+	
+	// 변경된 평점
+	function fn_changeRatingAvg(rating){
+		$("#ratingAvg").attr("data-rateyo-rating", rating);
+	}
 	
 	// 후기 삭제
 	function fn_remove(id) {
@@ -120,7 +138,8 @@
 			},
 			dataType : "text",
 			data : JSON.stringify({
-				"id" : id
+				"id" : id,
+				"productId" : $("#productId").val()
 			}),
 			success : function(result) {
 				if (result == "remove Success") {
@@ -134,6 +153,50 @@
 		});	
 	}
 
+	// 댓글 수정 폼 출력
+	function fn_updateForm(id, rating){
+		var html = "";
+		var buttons = "";
+
+		html += "<textarea id='editContent' class='form-control' rows='3'>";
+		html += "</textarea>"; 
+		
+		buttons += "<a href='#' onClick='fn_update("+ id+")'>완료</a>&nbsp;"
+		buttons += "<a href='#' onClick='fn_getList()'>취소</a>";
+
+		$("#"+id+"content").replaceWith(html);
+		$("#"+id+"buttons").replaceWith(buttons);
+	}
+
+	//댓글 수정
+	function fn_update(id) {
+		var html = "";
+		var content = $("#editContent").val();
+
+		$.ajax({
+			type : "post",
+			url : "${cp}/comment/modify",
+			headers : {
+				"Content-type" : "application/json",
+				"X-HTTP-Method-Override" : "POST"
+			},
+			dataType : "text",
+			data : JSON.stringify({
+				"id" : id,
+				"content" : content,
+			}),
+			success : function(result) {
+				if (result == "modify Success") {
+					alert("후기가 수정되었습니다");
+				}
+				fn_getList();
+			},
+			error: function(request, status, error) {
+				alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+			}
+		});
+	}
+	
 	// 후기 목록 함수
 	function fn_getList(){
 		$.ajax({
@@ -143,29 +206,30 @@
 			success: function(res){
 				var html = "";
 				
-				if(res.length < 1){
+				if(res.list.length < 1){
 					html += "<div class='commentContainer' style='text-align:center; margin: 10px'>";
 					html += "<br>등록된 후기가 없습니다<br><br>";
 					html += "</div>";
 				}else{
-					$(res).each(function(){
+					$(res.list).each(function(){
 						var date = new Date(this.date);
-						console.log(this.score);
 						html += "<br/>";
-						html += "<div class='commentContainer'><h6><strong>"+ this.memberId +"</strong>&nbsp;";
-						html += "<span class='rating' id='"+this.id+"comment' data-rating='"+this.score+"'></span>";
+						html += "<div class='commentContainer' id='"+this.id+"comment'><h6><strong>"+ this.memberId +"</strong>&nbsp;";
 						html += "<small>" + dateToStr(date) +"</small>&nbsp;";
 						if(memberId == this.memberId){
 							html += "<span id='" + this.id+ "buttons'>";
-							html += "<a href='#' onClick='fn_update("+ this.id+")'>수정</a>"
+							html += "<a href='#' onClick='fn_updateForm("+ this.id+", "+this.rating+")'>수정</a>&nbsp;&nbsp;"
 							html += "<a href='#' onClick='fn_remove(" + this.id+ ")'>삭제</a>";
 						}
-						html += "</span></h6>";
+						html += "</span>"
+						html += "<div class='ratingComment' data-rateyo-rating='" +this.rating +"'></div></h6>";
 						html += "<div id='"+this.id+"content'>"+this.content + "</div>";
 						html += "<hr></div>";
 					});
 				}
 				$("#commentList").html(html);
+				$("#ratingAvg").attr('data-rateyo-rating', res.ratingAvg);
+				console.log(res.ratingAvg);
 			}
 		});
 	}

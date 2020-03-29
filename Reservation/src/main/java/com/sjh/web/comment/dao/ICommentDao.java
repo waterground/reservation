@@ -10,8 +10,12 @@ public interface ICommentDao {
 
 	CommentDto selectComment(int id);
 
-	void deleteComment(int id);
+	void deleteComment(CommentDto comment);
 
 	List<CommentDto> listUpComment(CommentDto comment);
+	
+	void updateComment(CommentDto comment);
+	
+	float getRatingAvg(int productId);
 
 }

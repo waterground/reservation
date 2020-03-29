@@ -7,7 +7,7 @@ public class CommentDto {
 	private int reservationId;
 	private String memberId;
 	private int productId;
-	private int score;
+	private float rating;
 	private String content;
 	private Timestamp date;
 	public int getId() {
@@ -34,11 +34,11 @@ public class CommentDto {
 	public void setProductId(int productId) {
 		this.productId = productId;
 	}
-	public int getScore() {
-		return score;
+	public float getRating() {
+		return rating;
 	}
-	public void setScore(int score) {
-		this.score = score;
+	public void setRating(float rating) {
+		this.rating = rating;
 	}
 	public String getContent() {
 		return content;

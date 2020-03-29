@@ -1,6 +1,8 @@
 package com.sjh.web.comment.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -17,7 +19,8 @@ public class CommentService implements ICommentService {
 	
 	@Override
 	public CommentDto insertComment(CommentDto comment) {
-		return dao.insertComment(comment);
+		CommentDto c = dao.insertComment(comment);
+		return c;
 	}
 	
 	@Override
@@ -26,12 +29,25 @@ public class CommentService implements ICommentService {
 	}
 	
 	@Override
-	public void deleteComment(final int id) {
-		dao.deleteComment(id);
+	public void deleteComment(final CommentDto comment) {
+		dao.deleteComment(comment);
 	}
 	
 	@Override
-	public List<CommentDto> listUpComment(CommentDto comment){
-		return dao.listUpComment(comment);
+	public Map<String, Object> listUpComment(CommentDto comment){
+		
+		List<CommentDto> list = dao.listUpComment(comment);
+		float ratingAvg = dao.getRatingAvg(comment.getProductId());
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("list", list);
+		map.put("ratingAvg", ratingAvg);
+		
+		return map;
+	}
+	
+	@Override
+	public void updateComment(CommentDto comment) {
+		dao.updateComment(comment);
 	}
 }

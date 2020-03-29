@@ -12,6 +12,7 @@ public class ReservationDto {
 	private Date createDate;
 	private Date date;
 	private int people;
+	private boolean hasReview;
 	private FileDto img;
 	
 	public int getId() {
@@ -55,6 +56,12 @@ public class ReservationDto {
 	}
 	public void setPeople(int people) {
 		this.people = people;
+	}
+	public boolean isHasReview() {
+		return hasReview;
+	}
+	public void setHasReview(boolean hasReview) {
+		this.hasReview = hasReview;
 	}
 	public FileDto getImg() {
 		return img;

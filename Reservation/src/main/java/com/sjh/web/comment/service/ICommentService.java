@@ -1,6 +1,6 @@
 package com.sjh.web.comment.service;
 
-import java.util.List;
+import java.util.Map;
 
 import com.sjh.web.comment.dto.CommentDto;
 
@@ -10,8 +10,10 @@ public interface ICommentService {
 
 	CommentDto selectComment(int id);
 
-	void deleteComment(int id);
+	void deleteComment(CommentDto comment);
 
-	List<CommentDto> listUpComment(CommentDto comment);
+	Map<String, Object> listUpComment(CommentDto comment);
+	
+	void updateComment(CommentDto comment);
 
 }

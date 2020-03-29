@@ -16,6 +16,7 @@ public class ProductDto {
 	private String address;
 	private String openingHours;
 	private String homepage;
+	private float ratingAvg;
 	
 	private FileDto mainImg;
 	private List<FileDto> imgList;
@@ -67,6 +68,12 @@ public class ProductDto {
 	}
 	public void setHomepage(String homepage) {
 		this.homepage = homepage;
+	}
+	public float getRatingAvg() {
+		return ratingAvg;
+	}
+	public void setRatingAvg(float ratingAvg) {
+		this.ratingAvg = ratingAvg;
 	}
 	public FileDto getMainImg() {
 		return mainImg;

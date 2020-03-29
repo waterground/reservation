@@ -5,38 +5,48 @@
 	namespace="com.sjh.web.mappers.reservation.ReservationMapper">
 	<insert id="insert">
 		INSERT INTO
-		reservation(product_id, member_id,date,people)
-		VALUES(#{productId}, #{memberId}, #{date}, #{people})
+		reservation(product_id,
+		member_id,date,people)
+		VALUES(#{productId}, #{memberId}, #{date},
+		#{people})
 	</insert>
 
 	<select id="select" resultMap="reservationResultMap">
-		SELECT 
-			r.id, r.product_id, 
-			p.name AS product_name,
-			r.create_date, r.date, r.people,
-			file.name AS file_name, file.type
+		SELECT
+		r.id, r.product_id,
+		p.name AS product_name,
+		r.create_date, r.date, r.people,
+		file.name AS file_name, file.type
 		FROM reservation AS r
-		LEFT JOIN product_info AS p ON r.product_id = p.product_id
-		LEFT JOIN file ON r.product_id = file.product_id
+		LEFT JOIN product_info AS
+		p ON r.product_id = p.product_id
+		LEFT JOIN file ON r.product_id =
+		file.product_id
 		WHERE r.id=#{id}
 		AND file.name LIKE "%_ma_%"
 	</select>
 
 	<select id="listUp" resultMap="reservationResultMap">
-		SELECT 
-			r.id, r.product_id, 
-			p.name AS product_name,
-			r.create_date, r.date, r.people,
-			file.name AS file_name, file.type
+		SELECT
+		r.id, r.product_id,
+		p.name AS product_name,
+		r.create_date, r.date, r.people,
+		file.name AS file_name, file.type,
+		IF(c.id IS NULL, 'false', 'true') AS hasReview
 		FROM reservation AS r
-		LEFT JOIN product_info AS p ON r.product_id = p.product_id
-		LEFT JOIN file ON r.product_id = file.product_id
-		WHERE file.name LIKE "%_ma_%"
+		LEFT JOIN reservation_has_comment AS c ON r.id=c.reservation_id
+		LEFT
+			JOIN file ON r.product_id = file.product_id
+			AND file.name LIKE "%_ma_%"
+		LEFT JOIN
+		product_info AS p ON r.product_id = p.product_id
+		<!-- 
 		<if test="productId != 0">
 			AND r.product_id=#{productId}
 		</if>
+		-->
 		<if test="memberId != null">
-			AND r.member_id LIKE #{memberId}
+			WHERE r.member_id LIKE #{memberId}
 		</if>
 	</select>
 
@@ -53,17 +63,19 @@
 		DELETE FROM reservation
 		WHERE id=#{id}
 	</delete>
+
 	<resultMap id="reservationResultMap" type="ReservationDto">
-		<id property="id" column="id"/>
-		<result property="productId" column="product_id"/>
-		<result property="productName" column="product_name"/>
-		<result property="memberId" column="member_id"/>
-		<result property="createDate" column="create_date"/>
-		<result property="date" column="date"/>
-		<result property="people" column="people"/>
+		<id property="id" column="id" />
+		<result property="productId" column="product_id" />
+		<result property="productName" column="product_name" />
+		<result property="memberId" column="member_id" />
+		<result property="createDate" column="create_date" />
+		<result property="date" column="date" />
+		<result property="hasReview" column="hasReview" />
+		<result property="people" column="people" />
 		<association property="img" javaType="FileDto">
-			<result property="name" column="file_name"/>
-			<result property="type" column="type"/>
+			<result property="name" column="file_name" />
+			<result property="type" column="type" />
 		</association>
 	</resultMap>
 </mapper>
