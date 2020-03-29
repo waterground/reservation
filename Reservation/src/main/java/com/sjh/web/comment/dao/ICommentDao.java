@@ -6,7 +6,7 @@ import com.sjh.web.comment.dto.CommentDto;
 
 public interface ICommentDao {
 
-	void insertComment(CommentDto comment);
+	CommentDto insertComment(CommentDto comment);
 
 	CommentDto selectComment(int id);
 

@@ -17,6 +17,11 @@
 <script src='//unpkg.com/popper.js@1/dist/umd/popper.min.js'></script>
 <script src='//unpkg.com/bootstrap@4/dist/js/bootstrap.min.js'></script>
 <script src="${cp}/resources/javascript/myCarousel.js"></script>
+<!-- star rating -->
+<link href="${cp}/resources/css/star-rating-svg.css" media="all"
+	rel="stylesheet" type="text/css" />
+<script src="${cp}/resources/javascript/jquery.star-rating-svg.js"
+	type="text/javascript"></script>
 </head>
 <body>
 	<div class="background">
@@ -73,62 +78,39 @@
 			<div><a href="${cp}/reservation/${product.id}">예약하기</a></div>
 		</div>
 		<!-- avg score box -->
-		<div id="score"></div>
+		<div id="score">
+		</div>
 		<!-- comment box -->
 		<div id="commentList"></div>
-		<div class="toTop">
-			<div><a href="#main_header">Top</a></div>
-		</div>
 		<input type="hidden" id="productId" value="${product.id}"/>
+		<input type="hidden" id="memberId" value="${member.id}"/>
 		<jsp:include page="../footer.jsp" flush="false" />
 	</div>
 	<script>
 	$(".carousel").carousel({
 		interval : 2000
 	});
-	var bId, mIdVal;
+	
+	
+	var memberId; // 로그인 중인 멤버 id
 	$(document).ready(function(){
+		// 후기 목록 함수 호출	
+		memberId = $("#memberId").val();
 		
-		// 댓글 목록 함수 호출
-			
 		fn_getList();
 	});
-
-	//댓글 등록
-	$("#writeBtn").on("click", function() {
-		var rContent = $("#rContent");
-		var rContentVal = rContent.val();
-		var rNameVal = $("#rName").val();
-		
-		$.ajax({
-			type : "post",
-			url : "${cp}/comment/write",
-			headers : {
-				"Content-type" : "application/json",
-				"X-HTTP-Method-Override" : "POST"
-			},
-			dataType : "text",
-			data : JSON.stringify({
-				"memberId" : bId,
-				"rContent" : rContentVal,
-				"rName" : rNameVal,
-				"mId" : mIdVal
-			}),
-			success : function(result) {
-				if (result == "register Success") {
-					alert("댓글이 등록 되었습니다");
-					fn_getList(pageNum);
-					rContent.val(""); // 댓글 내용 초기화
-				}
-			},
-			error: function(request, status, error) {
-				alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-			}
+	
+	$( document ).ajaxComplete(function() {
+		$(".rating").starRating({
+			starSize: 20,
+			strokeColor : '#894A00',
+			strokeWidth : 10,
+			readOnly: true
 		});
 	});
-
-	//댓글 삭제
-	function fn_remove(rId) {
+	
+	// 후기 삭제
+	function fn_remove(id) {
 		$.ajax({
 			type : "post",
 			url : "${cp}/comment/remove",
@@ -156,7 +138,7 @@
 	function fn_getList(){
 		$.ajax({
 			type: "post",
-			url: "${cp}/comment/list?productId=" + $("#productId").val(),
+			url: "${cp}/comment/list/" + $("#productId").val(),
 			dataType : "json",
 			success: function(res){
 				var html = "";
@@ -168,13 +150,15 @@
 				}else{
 					$(res).each(function(){
 						var date = new Date(this.date);
+						console.log(this.score);
 						html += "<br/>";
 						html += "<div class='commentContainer'><h6><strong>"+ this.memberId +"</strong>&nbsp;";
+						html += "<span class='rating' id='"+this.id+"comment' data-rating='"+this.score+"'></span>";
 						html += "<small>" + dateToStr(date) +"</small>&nbsp;";
-						if(mIdVal == this.memberId){
-							html += "<span id='" + this.rId+ "buttons'>";
-							html += "<a href='#' onClick='fn_updateForm("+ this.rId + ")'>수정</a>&nbsp;"
-							html += "<a href='#' onClick='fn_remove(" + this.rId+ ")'>삭제</a>";
+						if(memberId == this.memberId){
+							html += "<span id='" + this.id+ "buttons'>";
+							html += "<a href='#' onClick='fn_update("+ this.id+")'>수정</a>"
+							html += "<a href='#' onClick='fn_remove(" + this.id+ ")'>삭제</a>";
 						}
 						html += "</span></h6>";
 						html += "<div id='"+this.id+"content'>"+this.content + "</div>";
@@ -200,7 +184,7 @@
 	    var sec = format.getSeconds();
 	    if(sec < 10) sec = '0' + sec;
 
-	    return year + "-" + month + "-" + date + " " + hour + ":" + min + ":" + sec;
+	    return year + "년" + month + "월" + date + "일 " + hour + ":" + min + ":" + sec;
 	}
 	</script>
 </body>

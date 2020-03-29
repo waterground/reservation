@@ -8,67 +8,78 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sjh.web.comment.dto.CommentDto;
 import com.sjh.web.comment.service.ICommentService;
 
-@RestController
+@Controller
 @RequestMapping("/comment")
 public class CommentController {
-	
+
 	@Inject
 	ICommentService service;
-	
-	@RequestMapping(value = "/write", method = RequestMethod.POST)
-	public ResponseEntity<String> write(@RequestBody CommentDto comment, HttpSession session) {
-		
-		ResponseEntity<String> entity = null;
 
-		try {
-			service.insertComment(comment);
-			entity = new ResponseEntity<String>("register Success", HttpStatus.OK);
-		} catch (Exception e) {
-			e.printStackTrace();
-			entity = new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
-		}
-
-		return entity;
-		
+	@ModelAttribute("cp")
+	public String getContextPath(HttpServletRequest request) {
+		return request.getContextPath();
 	}
-	
-	@RequestMapping(value = "/list", method = RequestMethod.POST)
-	public List<CommentDto> list(@RequestParam("productId") int productId) {
-		
+
+	// 작성 페이지
+	@GetMapping("/{reservationId}")
+	public String write(@PathVariable("reservationId") int reservationId, Model model) {
+
+		model.addAttribute("comment", new CommentDto());
+		model.addAttribute("reservationId", reservationId);
+
+		return "/comment/comment";
+	}
+
+	// 작성 처리
+	@PostMapping("/")
+	public String writeOk(@ModelAttribute("comment") CommentDto comment, HttpSession session) {
+
+		CommentDto c = service.insertComment(comment);
+
+		return "redirect:/product/" + c.getProductId();
+
+	}
+
+	@ResponseBody
+	@PostMapping("/list/{productId}")
+	public List<CommentDto> list(@PathVariable("productId") int productId, Model model) {
+
 		CommentDto c = new CommentDto();
 		c.setProductId(productId);
+
 		return service.listUpComment(c);
 	}
 	/*
-	@RequestMapping(value = "/modify", method = RequestMethod.POST)
-	public ResponseEntity<String> modify(@RequestBody CommentDto comment) {
-		ResponseEntity<String> entity = null;
-		
-		try {
-			service.commentUpdate(comment);
-			entity = new ResponseEntity<String>("modify Success", HttpStatus.OK);
-		} catch (Exception e) {
-			e.printStackTrace();
-			entity = new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
-		}
-		
-		return entity;
-	}
-	*/
-	
+	 * @RequestMapping(value = "/modify", method = RequestMethod.POST) public
+	 * ResponseEntity<String> modify(@RequestBody CommentDto comment) {
+	 * ResponseEntity<String> entity = null;
+	 * 
+	 * try { service.commentUpdate(comment); entity = new
+	 * ResponseEntity<String>("modify Success", HttpStatus.OK); } catch (Exception
+	 * e) { e.printStackTrace(); entity = new ResponseEntity<String>(e.getMessage(),
+	 * HttpStatus.BAD_REQUEST); }
+	 * 
+	 * return entity; }
+	 */
+
 	@RequestMapping(value = "/remove", method = RequestMethod.POST)
 	public ResponseEntity<String> remove(@RequestBody CommentDto comment) {
 		ResponseEntity<String> entity = null;
-		
+
 		try {
 			service.deleteComment(comment.getId());
 			entity = new ResponseEntity<String>("remove Success", HttpStatus.OK);
@@ -76,7 +87,7 @@ public class CommentController {
 			e.printStackTrace();
 			entity = new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
-		
+
 		return entity;
 	}
 }

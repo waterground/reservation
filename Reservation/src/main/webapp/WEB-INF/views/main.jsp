@@ -77,11 +77,6 @@
 			</nav>
 		</div>
 		<div class="card-columns" id="product_list"></div>
-		<div class="toTop">
-			<div>
-				<a href="#main_header">Top</a>
-			</div>
-		</div>
 		<jsp:include page="footer.jsp" flush="false" />
 	</div>
 	<script>

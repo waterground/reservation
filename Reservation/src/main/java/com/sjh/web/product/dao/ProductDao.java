@@ -33,8 +33,9 @@ public class ProductDao implements IProductDao {
 	
 	@Override
 	public ProductDto selectProductInfo(final int id) {
-		List<ProductDto> list = sqlSession.selectList(NAMESPACE + ".selectProductInfo", id);
-		return list.get(0);
+		//List<ProductDto> list = sqlSession.selectList(NAMESPACE + ".selectProductInfo", id);
+		return sqlSession.selectOne(NAMESPACE + ".selectProductInfo", id);
+		//return list.get(0);
 	}
 	
 	@Override

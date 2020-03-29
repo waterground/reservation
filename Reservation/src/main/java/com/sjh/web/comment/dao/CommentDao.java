@@ -21,17 +21,21 @@ public class CommentDao implements ICommentDao {
 	}
 	
 	@Override
-	public void insertComment(final CommentDto comment){
+	public CommentDto insertComment(final CommentDto comment){
 		sqlSession.insert(NAMESPACE + ".insert", comment);
+		sqlSession.insert(NAMESPACE + ".insertRelation", comment);
+		return sqlSession.selectOne(NAMESPACE +".select", 0);
 	}
 	
 	@Override
 	public CommentDto selectComment(final int id){
+		
 		return sqlSession.selectOne(NAMESPACE + ".select", id);
 	}
 	
 	@Override
 	public void deleteComment(final int id) {
+		sqlSession.delete(NAMESPACE + ".deleteRelation", id);
 		sqlSession.delete(NAMESPACE + ".delete", id);
 	}
 	

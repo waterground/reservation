@@ -39,11 +39,6 @@
 				<a href="#" class="btn btn-primary float-right" onClick="history.back()">취소</a>
 			</form:form>
 		</div>
-		<div class="toTop">
-			<div>
-				<a href="#main_header">Top</a>
-			</div>
-		</div>
 		<jsp:include page="../footer.jsp" flush="false" />
 	</div>
 		

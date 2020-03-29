@@ -1,19 +1,26 @@
 package com.sjh.web.comment.dto;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 
 public class CommentDto {
 	private int id;
+	private int reservationId;
 	private String memberId;
 	private int productId;
 	private int score;
 	private String content;
-	private Date date;
+	private Timestamp date;
 	public int getId() {
 		return id;
 	}
 	public void setId(int id) {
 		this.id = id;
+	}
+	public int getReservationId() {
+		return reservationId;
+	}
+	public void setReservationId(int reservationId) {
+		this.reservationId = reservationId;
 	}
 	public String getMemberId() {
 		return memberId;
@@ -39,10 +46,10 @@ public class CommentDto {
 	public void setContent(String content) {
 		this.content = content;
 	}
-	public Date getDate() {
+	public Timestamp getDate() {
 		return date;
 	}
-	public void setDate(Date date) {
+	public void setDate(Timestamp date) {
 		this.date = date;
 	}
 	
