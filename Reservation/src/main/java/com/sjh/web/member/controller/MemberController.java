@@ -62,12 +62,20 @@ public class MemberController {
 		return "/member/join";
 	}
 	
-	@PostMapping("/joinOk")
-	public String joinOk(@ModelAttribute("member") MemberDto m) {
+	@PostMapping("/join")
+	public ModelAndView joinOk(@ModelAttribute("member") MemberDto m) {
 		
-		service.addMember(m);
+		ModelAndView mav = new ModelAndView();
 		
-		return "/member/login";
+		if (m.getId().length() < 7) {
+			mav.addObject("possibleId", false);
+			mav.setViewName("/member/join");
+		} else {
+			service.addMember(m);
+			mav.setViewName("redirect:/member/join");
+		}
+		
+		return mav;
 	}
 
 	// Logout

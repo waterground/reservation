@@ -2,32 +2,16 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.sjh.web.mappers.product.ProductMapper">
-	<!-- <insert id="create">
-		INSERT INTO board(
-			mId
-			, bName
-			, bTitle
-			, bContent
-		) VALUES (
-			#{mId}
-			, #{bName}
-			, #{bTitle}
-			, #{bContent}
-		)
-	</insert>-->
-	
+
 	<!-- product_info 선택 -->
 	<select id="selectProductInfo" resultMap="productInfoResultMap">
 		SELECT 
 			i.product_id AS p_id
 			, i.name AS product_info_name
-			, i.tel, i.address
-			, i.opening_hours
-			, i.homepage
-			, i.rating_avg
+			, i.tel, i.address, i.opening_hours
+			, i.homepage, i.rating_avg
 			, f.id AS f_id
 			, f.name AS file_name
-			, f.type
 		FROM 
 			product AS p
 		JOIN
@@ -52,7 +36,7 @@
 				, c.name AS category_name
 			</if>
 			, i.name AS product_info_name
-			, f.name AS file_name, f.type
+			, f.id AS f_id, f.name AS file_name
 		FROM 
 			product AS p
 		<if test="!'all'.equals(_parameter)">
@@ -76,28 +60,6 @@
 		</if>
 	</select>
 	
-	<!-- 
-	전체 product 선택 
-	<select id="listUpAll" resultMap="productResultMap">
-		SELECT
-			p.id, p.description
-			, info.name AS product_info_name
-			, f.name AS file_name, f.type
-		FROM 
-			product AS p
-		JOIN
-			product_info AS info
-		ON
-			(p.id = info.product_id)
-		JOIN
-			file AS f
-		ON 
-			(p.id = f.product_id)
-		WHERE
-			f.name LIKE '%_th_%';
-	</select>
-	-->
-	
 	<!-- category에 따른 product 개수 확인 -->
 	<select id="cntProduct" parameterType="String" resultType="int">
 		SELECT
@@ -119,7 +81,7 @@
 		SELECT 
 			promo.id AS promotion_id
 			, promo.product_id
-			, f.name AS file_name, f.type
+			, f.id AS f_id, f.name AS file_name
 		FROM 
 			promotion AS promo
 		JOIN
@@ -133,23 +95,6 @@
 		WHERE
 			f.name LIKE "%_ma_%"
 	</select>
-	
-	<!-- 
-	<update id="update">
-		UPDATE 
-			board 
-		SET 
-			bTitle=#{bTitle}
-			, bContent=#{bContent}
-		WHERE 
-			bId=#{bId}
-	</update> 
-	
-	<delete id="delete">
-		DELETE FROM board 
-		WHERE bId=#{bId}
-	</delete>
-	 -->
 	
 	<!-- DTO의 필드변수명과 DB 칼럼명 매핑 -->
 	<resultMap id="productResultMap" type="ProductDto">
@@ -175,13 +120,6 @@
 	
 		<!-- 상세 이미지 -->		
 		<collection property="imgList" ofType="FileDto" resultMap="fileResultMap"/>
-		<!-- 
-		<collection property="imgList" ofType="FileDto">
-			<id property="id" column="f_id"/>
-			<result property="name" column="file_name"/>
-			<result property="type" column="type"/>
-		</collection>
-		 -->
 	</resultMap>
 	
 	<resultMap id="promotionResultMap" type="PromotionDto">
@@ -189,17 +127,10 @@
 		<result property="productId" column="product_id"/>
 		<!-- img -->
 		<association property="img" resultMap="fileResultMap"/>
-		<!--  
-		<association property="img" javaType="FileDto">
-			<result property="name" column="file_name"/>
-			<result property="type" column="type"/>
-		</association>
-		-->
 	</resultMap>
 	
 	<resultMap id="fileResultMap" type="FileDto">
 		<id property="id" column="f_id"/>
 		<result property="name" column="file_name"/>
-		<result property="type" column="type"/>
 	</resultMap>
 </mapper>

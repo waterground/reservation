@@ -23,4 +23,25 @@
 	
 	<context:component-scan base-package="com.sjh.web" />
 	
+	<!-- file Upload -->
+    <beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!-- max upload size in bytes -->
+        <beans:property name="maxUploadSize" value="5242880" /> <!-- 5MB -->
+        <!-- max size of file in memory (in bytes) -->
+        <beans:property name="maxInMemorySize" value="1048576" /> <!-- 1MB -->
+    </beans:bean>
+    
+    <interceptors>
+		<interceptor>
+			<mapping path="/member/remove"/>
+			<mapping path="/member/logout"/>
+			<mapping path="/reservation/*"/>
+			<mapping path="/review/remove/*"/>
+			<mapping path="/review/*"/>
+			<mapping path="/review/modify"/>
+			<mapping path="/review/remove"/>
+			<beans:bean class="com.sjh.web.member.LoginInterceptor"/>
+		</interceptor>
+	</interceptors>
+	
 </beans:beans>

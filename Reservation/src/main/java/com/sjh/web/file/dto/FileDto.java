@@ -2,9 +2,7 @@ package com.sjh.web.file.dto;
 
 public class FileDto {
 	private int id;
-	private String name;
-	private String type;
-	
+	private String name;	
 	
 	public int getId() {
 		return id;
@@ -17,11 +15,5 @@ public class FileDto {
 	}
 	public void setName(String name) {
 		this.name = name;
-	}
-	public String getType() {
-		return type;
-	}
-	public void setType(String type) {
-		this.type = type;
 	}
 }

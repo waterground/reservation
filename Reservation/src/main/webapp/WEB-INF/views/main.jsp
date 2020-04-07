@@ -15,6 +15,8 @@
 <script src='//unpkg.com/popper.js@1/dist/umd/popper.min.js'></script>
 <script src='//unpkg.com/bootstrap@4/dist/js/bootstrap.min.js'></script>
 <script src="${cp}/resources/javascript/myCarousel.js"></script>
+<!-- font -->
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
 	<div class="background">
@@ -37,7 +39,7 @@
 							<div class="carousel-item active">
 								<a href="${cp}/product/${promotion.productId}"> <img
 									class="d-block w-100"
-									src="${cp}/resources/img/img/${promotion.img.name}.${promotion.img.type}">
+									src="${cp}/file/download/img/${promotion.img.id}">
 								</a>
 							</div>
 						</c:when>
@@ -45,7 +47,7 @@
 							<div class="carousel-item">
 								<a href="${cp}/product/${promotion.productId}"> <img
 									class="d-block w-100"
-									src="${cp}/resources/img/img/${promotion.img.name}.${promotion.img.type}">
+									src="${cp}/file/download/img/${promotion.img.id}">
 								</a>
 							</div>
 						</c:otherwise>
@@ -116,7 +118,7 @@
 					} else {
 						$(res).each(function() {
 							html += '<div class="card" onClick="location.href=\'${cp}/product/'+ this.id + '\'">';
-							html += '<img class="card-img-top" src="${cp}/resources/img/img/'+this.mainImg.name+'.'+this.mainImg.type+ '">';
+							html += '<img class="card-img-top" src="${cp}/file/download/img/'+this.mainImg.id+'">';
 							html += '<div class="card-body">';
 							html += '<h5 class="card-title">'+ this.name+ '</h5>';
 							html += '<p class="card-text">'+ this.description+ '</p>';

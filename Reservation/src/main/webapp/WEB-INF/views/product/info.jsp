@@ -11,28 +11,22 @@
 <title>상세보기</title>
 <link rel="stylesheet" href="${cp}/resources/css/style.css" />
 <link rel="stylesheet" href="${cp}/resources/css/info_style.css" />
-<link rel="stylesheet"
-	href="//unpkg.com/bootstrap@4/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="//unpkg.com/bootstrap@4/dist/css/bootstrap.min.css">
 <script src='//unpkg.com/jquery@3/dist/jquery.min.js'></script>
 <script src='//unpkg.com/popper.js@1/dist/umd/popper.min.js'></script>
 <script src='//unpkg.com/bootstrap@4/dist/js/bootstrap.min.js'></script>
 <script src="${cp}/resources/javascript/myCarousel.js"></script>
-<!-- star rating -->
-<link href="${cp}/resources/css/star-rating-svg.css" media="all"
-	rel="stylesheet" type="text/css" />
-<script src="${cp}/resources/javascript/jquery.star-rating-svg.js"
-	type="text/javascript"></script>
-	
-<!-- Latest compiled and minified CSS -->
+<!-- font -->
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
+<!-- star rating(rateyo) -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
-<!-- Latest compiled and minified JavaScript -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
 </head>
 <body>
 	<div class="background">
 		<jsp:include page="../header.jsp" flush="false" />
 		<!-- img box -->
-		<div id="promotion" class="carousel slide" data-ride="carousel">
+		<div id="infoImg" class="carousel slide" data-ride="carousel">
 			<ol class="carousel-indicators">
 				<li data-target="#carouselIndicators" data-slide-to="0"
 					class="active" onclick="indexEvent(0)"></li>
@@ -50,13 +44,13 @@
 						<c:when test="${status.index eq 0}">
 							<div class="carousel-item active">
 								<img class="d-block w-100"
-									src="${cp}/resources/img/img/${img.name}.${img.type}">
+									src="${cp}/file/download/img/${img.id}">
 							</div>
 						</c:when>
 						<c:otherwise>
 							<div class="carousel-item">
 								<img class="d-block w-100"
-									src="${cp}/resources/img/img/${img.name}.${img.type}">
+									src="${cp}/file/download/img/${img.id}">
 							</div>
 						</c:otherwise>
 					</c:choose>
@@ -83,17 +77,26 @@
 		<div id="btnContainer">
 			<div><a href="${cp}/reservation/${product.id}">예약하기</a></div>
 		</div>
-		<!-- avg rating box -->
-		<div id="ratingContainer">
-		<span id="ratingText">${product.ratingAvg}</span>
-			<div id="ratingAvg" data-rateyo-rating="0"></div>
-			<!-- ${product.ratingAvg} -->
-		</div>
-		<!-- comment box -->
-		<div id="commentList"></div>
+		<!-- review box -->
+		<div id="reviewList"></div>
 		<input type="hidden" id="productId" value="${product.id}"/>
 		<input type="hidden" id="memberId" value="${member.id}"/>
 		<jsp:include page="../footer.jsp" flush="false" />
+		<div class="modal" id="reviewImgModal" tabindex="-1" role="dialog">
+    		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">리뷰 이미지보기</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">×</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					
+				</div>
+			</div>
+		</div>
+    </div>
 	</div>
 	<script>
 	$(".carousel").carousel({
@@ -109,17 +112,47 @@
 	});
 	
 	$(document).ajaxComplete(function() {
-		$(".ratingComment").rateYo({
+		$(".ratingReview").rateYo({
 		    starWidth: "15px",
 		    normalFill: "#A0A0A0",
 		    readOnly: true
 		  });
 		
 		$("#ratingAvg").rateYo({
-		    starWidth: "40px",
+		    starWidth: "20px",
 		    normalFill: "#A0A0A0",
 		    readOnly: true
 		});
+	});
+	
+	$("#reviewImgModal").on('show.bs.modal', function(event) {
+		// 리뷰 이미지 아이디 값 받아오기
+		var	img_1 = $(event.relatedTarget).data('img-0');
+		var img_2 = $(event.relatedTarget).data('img-1');
+		var img_3 = $(event.relatedTarget).data('img-2');
+		
+		var html = "";
+		html += "<div class='carousel slide' data-ride='carousel'>";
+		html += "<div class='carousel-inner'>";
+		html += "<div class='carousel-item active'>";
+		html += "<img src='${cp}/file/download/review/"+img_1+"'></div>";
+		if(img_2 != undefined){
+			html += "<div class='carousel-item'>";
+			html += "<img src='${cp}/file/download/review/"+img_2+"'></div>";
+		}
+		if(img_3 != undefined){
+			html += "<div class='carousel-item'>";
+			html += "<img src='${cp}/file/download/review/"+img_3+"'></div>";
+		}
+
+		html += "</div>";
+		html += "<a class='carousel-control-prev' href='#' role='button' data-slide='prev' onclick='prevEvent()'>";
+		html += "<span class='carousel-control-prev-icon' aria-hidden='true'></span></a>";
+		html += "<a class='carousel-control-next' href='#' role='button' data-slide='next' onclick='nextEvent()'>";
+		html += "<span class='carousel-control-next-icon' aria-hidden='true'></span></a>";
+		html += "</div>";
+		
+		$(".modal-body").html(html);
 	});
 	
 	// 변경된 평점
@@ -131,7 +164,7 @@
 	function fn_remove(id) {
 		$.ajax({
 			type : "post",
-			url : "${cp}/comment/remove",
+			url : "${cp}/review/remove",
 			headers : {
 				"Content-type" : "application/json",
 				"X-HTTP-Method-Override" : "POST"
@@ -175,7 +208,7 @@
 
 		$.ajax({
 			type : "post",
-			url : "${cp}/comment/modify",
+			url : "${cp}/review/modify",
 			headers : {
 				"Content-type" : "application/json",
 				"X-HTTP-Method-Override" : "POST"
@@ -201,20 +234,25 @@
 	function fn_getList(){
 		$.ajax({
 			type: "post",
-			url: "${cp}/comment/list/" + $("#productId").val(),
+			url: "${cp}/review/list/" + $("#productId").val(),
 			dataType : "json",
 			success: function(res){
 				var html = "";
 				
+				html += "<div style='font-weight:bolder'>예약자 리뷰</div>";
+				html += "<div id='ratingAvg' data-rateyo-rating='"+res.ratingAvg+"'></div>";
+				html += "<div id='ratingText'>"+res.ratingAvg+"<span style='color:silver'>/5.0</span></div>";
+				
 				if(res.list.length < 1){
-					html += "<div class='commentContainer' style='text-align:center; margin: 10px'>";
+					html += "<div class='reviewContainer' style='text-align:center; margin: 10px'>";
 					html += "<br>등록된 후기가 없습니다<br><br>";
 					html += "</div>";
 				}else{
+					html += "<br><hr style='height:2px'>"
 					$(res.list).each(function(){
 						var date = new Date(this.date);
 						html += "<br/>";
-						html += "<div class='commentContainer' id='"+this.id+"comment'><h6><strong>"+ this.memberId +"</strong>&nbsp;";
+						html += "<div class='reviewContainer' id='"+this.id+"review'><h6><strong>"+ this.memberId +"</strong>&nbsp;";
 						html += "<small>" + dateToStr(date) +"</small>&nbsp;";
 						if(memberId == this.memberId){
 							html += "<span id='" + this.id+ "buttons'>";
@@ -222,14 +260,23 @@
 							html += "<a href='#' onClick='fn_remove(" + this.id+ ")'>삭제</a>";
 						}
 						html += "</span>"
-						html += "<div class='ratingComment' data-rateyo-rating='" +this.rating +"'></div></h6>";
-						html += "<div id='"+this.id+"content'>"+this.content + "</div>";
+						html += "<div class='ratingReview' data-rateyo-rating='" +this.rating +"'></div></h6>";
+						html += "<div class ='content' id='"+this.id+"content'>"+this.content + "</div>";
+						if(this.imgList.length != 0){
+							html += "<div class='imgContainer'>";
+							var imgId = this.imgList[0].id;
+							html += "<img class='d-block w-50' src='${cp}/file/download/review/"+imgId+"' ";
+							html += "data-toggle='modal' data-target='#reviewImgModal'";
+							for(var img in this.imgList){
+								html += " data-img-" + img + "='"+this.imgList[img].id+"'";
+							}
+							html += ">";
+							html += "</div>";
+						}
 						html += "<hr></div>";
 					});
 				}
-				$("#commentList").html(html);
-				$("#ratingAvg").attr('data-rateyo-rating', res.ratingAvg);
-				console.log(res.ratingAvg);
+				$("#reviewList").html(html);
 			}
 		});
 	}

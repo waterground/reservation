@@ -1,0 +1,21 @@
+#reservationList img{
+	width: 200px;
+	height: 200px;
+}
+
+#reservaionList .card-block.px-2{
+	margin: 10px;
+}
+
+.card{
+	margin: 5px auto;
+}
+
+.listContainer{
+	margin: 10px;
+}
+
+.card-block.px-2{
+	height: 200px;
+	padding: 17px 20px!important;
+}

@@ -1,8 +1,11 @@
-package com.sjh.web.comment.dto;
+package com.sjh.web.review.dto;
 
 import java.sql.Timestamp;
+import java.util.List;
 
-public class CommentDto {
+import com.sjh.web.file.dto.FileDto;
+
+public class ReviewDto {
 	private int id;
 	private int reservationId;
 	private String memberId;
@@ -10,6 +13,8 @@ public class CommentDto {
 	private float rating;
 	private String content;
 	private Timestamp date;
+	private List<FileDto> imgList;
+	
 	public int getId() {
 		return id;
 	}
@@ -52,6 +57,11 @@ public class CommentDto {
 	public void setDate(Timestamp date) {
 		this.date = date;
 	}
-	
+	public List<FileDto> getImgList() {
+		return imgList;
+	}
+	public void setImgList(List<FileDto> imgList) {
+		this.imgList = imgList;
+	}
 	
 }

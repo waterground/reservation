@@ -33,7 +33,41 @@
 	cursor:pointer;
 }
 
-#commnetList .commentContainer{
+#reviewList{
+	margin: 20px;
+}
+
+#ratingText{
+	float:left;
+	margin-left: 5px;
+}
+
+#ratingAvg{
+	float:left;
+}
+
+.reviewContainer content{
+	display: inline-block;
 	width: 60%;
-	margin: 15px;
+	margin-left: 5px;
+}
+
+.reviewContainer imgContainer{
+	display: inline-block;
+	margin-right: 5px;
+	width: 20%;
+}
+
+.reviewContainer imgContainer:hover{
+	cursor:pointer;
+}
+
+#reviewImgModal .carousel-item img{
+	margin: 2px;
+	width: 450px;
+	height: 300px;
+}
+
+.jq-ry-container{
+	padding: 0 !important;
 }

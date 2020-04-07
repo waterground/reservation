@@ -3,7 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <div id="main_header">
 	<div class="first">
-		<a href="${cp}/main"><img src="${cp}/resources/img/logo.png" /></a>
+		<a href="${cp}/main"><img src="${cp}/file/download/logo/0"/></a>
 	</div>
 	<div class="second">
 		<c:choose>
@@ -13,8 +13,8 @@
 						id="dropdownMenuButton" data-toggle="dropdown"
 						style="color: white">${member.getId()}</button>
 					<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-						<a class="dropdown-item" href="${cp}/reservation/list">예약 목록</a> <a
-							class="dropdown-item" href="${cp}/member/remove">회원 탈퇴</a>
+						<a class="dropdown-item" href="${cp}/reservation/list">예약 목록</a> 
+						<a class="dropdown-item" href="${cp}/member/remove">회원 탈퇴</a>
 						<div class="dropdown-divider"></div>
 						<a class="dropdown-item" href="${cp}/member/logout">로그아웃</a>
 					</div>

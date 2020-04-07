@@ -1,5 +1,6 @@
 body{
 	background-color: gray;
+	font-family: 'Nanum Gothic', sans-serif;
 }
 
 .background {
@@ -46,8 +47,17 @@ body{
 	text-decoration: none;
 }
 
+div.dropdown-menu.show{
+	min-width: 100px;
+	text-align:center;
+}
+
 .dropdown-toggle::after {
     display:none;
+}
+
+a.dropdown-item{
+	padding: 2px 5px;
 }
 
 .carousel-inner {
@@ -56,9 +66,13 @@ body{
 }
 
 .carousel-inner img {
-	margin-top: -100px;
+	margin-top: -50px;
 	width: inherit;
 	height: auto;
+}
+
+.carousel-item img{
+	height: 400px;
 }
 
 #product_tab {
@@ -94,8 +108,7 @@ body{
 
 .form_container{
 	width: 70%;
-	margin: 20px auto;
-	margin-bottom: 100px;
+	margin: 80px auto 110px;
 }
 
 .toTop{

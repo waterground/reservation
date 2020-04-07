@@ -15,8 +15,7 @@
 		<typeAlias type="com.sjh.web.file.dto.FileDto" alias="FileDto" />
 		<typeAlias type="com.sjh.web.member.dto.MemberDto" alias="MemberDto" />
 		<typeAlias type="com.sjh.web.reservation.dto.ReservationDto" alias="ReservationDto" />
-		<typeAlias type="com.sjh.web.comment.dto.CommentDto" alias="CommentDto" />
-	</typeAliases>
-	
+		<typeAlias type="com.sjh.web.review.dto.ReviewDto" alias="ReviewDto" />
+	</typeAliases>	
 	
 </configuration>

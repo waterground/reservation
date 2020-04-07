@@ -7,15 +7,18 @@
 <meta charset="UTF-8">
 <title>예약목록 확인</title>
 <link rel="stylesheet" href="${cp}/resources/css/style.css" />
+<link rel="stylesheet" href="${cp}/resources/css/reservation_style.css" />
 <link rel="stylesheet" href="//unpkg.com/bootstrap@4/dist/css/bootstrap.min.css">
 <script src='//unpkg.com/jquery@3/dist/jquery.min.js'></script>
 <script src='//unpkg.com/popper.js@1/dist/umd/popper.min.js'></script>
 <script src='//unpkg.com/bootstrap@4/dist/js/bootstrap.min.js'></script>
+<!-- font -->
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
 </head>
 <body>
 	<div class="background">
 		<jsp:include page="../header.jsp" flush="false" />
-		<div class="list">
+		<div class="listContainer">
 			<br>
 			<h3>나의 예약 목록</h3>
 			<br>
@@ -24,9 +27,11 @@
 					<div class="card">
 						<div class="row no-gutters">
 							<div class="col-auto">
-								<img
-									src="${cp}/resources/img/img/${reservation.img.name}.${reservation.img.type}"
-									class="img-fluid" alt="${reservation.productName}" />
+								<a href="${cp}/product/${reservation.productId}">
+									<img
+										src="${cp}/file/download/img/${reservation.img.id}"
+										class="img-fluid" alt="${reservation.productName}" />
+								</a>
 							</div>
 							<div class="col">
 								<div class="card-block px-2">
@@ -34,10 +39,10 @@
 									<p class="card-text">예약 날짜: ${reservation.date}</p>
 									<p class="card-text">예약 인원: ${reservation.people}</p>
 									<c:if test="${reservation.hasReview eq false}">
-										<a href="${cp}/comment/${reservation.id}" class="btn btn-primary" onclick="sendInfo(${reservation.productId})">코멘트 작성</a> 
+										<a href="${cp}/review/${reservation.id}" class="btn btn-primary">코멘트 작성</a> 
 									</c:if>
 									<c:if test="${reservation.hasReview eq true}">
-										<a href="${cp}/product/${reservation.productId}" class="btn btn-primary" onclick="sendInfo(${reservation.productId})">코멘트 보기</a> 
+										<a href="${cp}/product/${reservation.productId}" class="btn btn-secondary">코멘트 보기</a> 
 									</c:if>
 									<a href="#" class="btn btn-danger" onclick="del(${reservation.id})">예약취소</a>
 								</div>
@@ -61,10 +66,7 @@
 				location.href=getContextPath() + '/reservation/remove/' + id;
 			}
 		}	
-		
-		function sendInfo(productId){
-			
-		}
+
 		</script>
 </body>
 </html>

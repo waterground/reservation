@@ -30,7 +30,6 @@ public class ProductController {
 
 	@RequestMapping("/main")
 	public String main(Model model) {
-
 		List<PromotionDto> list = null;
 
 		list = service.listUpPromotion();

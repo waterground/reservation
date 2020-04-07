@@ -13,18 +13,22 @@
 <script src='//unpkg.com/jquery@3/dist/jquery.min.js'></script>
 <script src='//unpkg.com/popper.js@1/dist/umd/popper.min.js'></script>
 <script src='//unpkg.com/bootstrap@4/dist/js/bootstrap.min.js'></script>
+<!-- font -->
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
 <title>회원 탈퇴</title>
 </head>
 <body>
 	<div class="background">
 		<jsp:include page="../header.jsp" flush="false" />
-		<br>
-		<h3>회원 탈퇴</h3>
-		<br>
 		<div class="form_container">
-			<form:form action="${cp}/member/remove" method="post"
-				commandName="member">
-				<form:hidden path="id" value="${member.id}" />
+			<br>
+			<h3>회원 탈퇴</h3>
+			<br>
+			<form:form action="${cp}/member/remove" method="post" commandName="member">
+				<div class="form-group">
+					<form:label path="id"> 아이디 </form:label><br>
+					<form:input path="id" value="${member.id}" readonly="true" class="form-control"/>
+				</div>
 				<div class="form-group">
 					<form:label path="pw"> 비밀번호 </form:label>
 					<form:password path="pw" placeholder="비밀번호 " class="form-control" />
@@ -34,7 +38,7 @@
 					</small>
 				</c:if>
 				<br />
-				<button>회원 탈퇴</button>
+				<button class="btn btn-warning float-right">회원 탈퇴</button>
 			</form:form>
 		</div>
 		<jsp:include page="../footer.jsp" flush="false" />
