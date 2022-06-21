@@ -157,7 +157,7 @@
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>8.0.19</version>
+			<version>8.0.28</version>
 		</dependency>
 
 		<!-- mybatis log4jdbc-log4j2 라이브러리 -->
